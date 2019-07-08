@@ -2,29 +2,20 @@
 #include "ui_mainwindow.h"
 #include "file.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->statusBar->showMessage("OK");
-    connect(ui->insButton, SIGNAL(clicked()), SLOT(insRow()));
-    connect(ui->delButton, SIGNAL(clicked()), SLOT(delRow()));
+    //Student *model = new Student;
+    //ui->tableView->setModel(model);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void insRow()
-{
-
-}
-
-void delRow()
-{
-
 }
 
 void MainWindow::on_actionOpen_File_triggered()
@@ -70,7 +61,17 @@ void MainWindow::saveFile(const QString &filePath)
         return;
     }
     QTextStream stream(&mFile);
-    stream<<ui->tableView->Plain;
+    //stream<<ui->tableView->Plain;
     ui->statusBar->showMessage("Write to file: " + filePath);
     mFile.close();
+}
+
+void MainWindow::on_insButton_clicked()
+{
+
+}
+
+void MainWindow::on_delButton_clicked()
+{
+
 }

@@ -13,11 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//#include <QAbstractTableModel>
+
 using namespace std;
 
 typedef unsigned int uint;
 
-class Student{
+class Student  /*: public QAbstractTableModel*/
+{
 
 protected:
     char name[30];
@@ -53,7 +56,7 @@ public:
 	}
 };
 
-class QAbstractTableModel
+/*class QAbstractTableModel
 {
 private:
     
@@ -100,3 +103,4 @@ public:
 	}
 	
 };
+*/

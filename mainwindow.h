@@ -6,6 +6,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QTextEdit>
+#include "student.h"
 
 using namespace std;
 
@@ -27,6 +28,10 @@ private slots:
 
     void saveFile(const QString &filePath);
     void on_actionSave_File_triggered();
+
+    void on_insButton_clicked();
+
+    void on_delButton_clicked();
 
 private:
     Ui::MainWindow *ui;
