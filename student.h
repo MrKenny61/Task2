@@ -44,7 +44,7 @@ public:
 	string get() const
 	{
 		
-		return string(name) + " " + to_string(course) + " " + to_string(group);
+		return "\r"+string(name) + " " + to_string(course) + " " + to_string(group);
 	}
 
 	~Student()
@@ -92,12 +92,11 @@ public:
 	}
 	void insert_row(Student s)
 	{
-		
 		std::ofstream file;
 		file.open(path, std::ios::binary | std::ofstream::out | std::ofstream::in);
 		file.seekp(0, std::ios_base::end);
-		file.write("\r", 1);
-		file.write(s.get().c_str(), s.get().size()+2);
+		
+		file.write(s.get().c_str(), s.get().size());
 	}
 	
 };
