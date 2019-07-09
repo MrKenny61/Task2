@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "file.h"
+#include "student.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -37,16 +38,18 @@ void MainWindow::openFile(const QString &filePath)
         return;
     }
 
-    //QDataStream input(&mFile);
-    //Student_model::student stud;
-    //Student_model *studmod = new Student_model;
+    QDataStream input(&mFile);
+    Student_model::student stud;
+    Student_model *studmod = new Student_model;
 
-    /*while(true)
+    while(true)
     {
         input >> stud;
-    }*/
+        studmod->vector.push_back(stud);
+        if (input.atEnd()) break;
+    }
 
-    //ui->tableView->setModel(studmod);
+    ui->tableView->setModel(studmod);
     ui->statusBar->showMessage("Read to file: " + filePath);
     mFile.flush();
     mFile.close();
@@ -69,18 +72,37 @@ void MainWindow::saveFile(const QString &filePath)
         ui->statusBar->showMessage("Error save file");
         return;
     }
-    QTextStream stream(&mFile);
-    //stream<<ui->tableView->Plain;
+
+    QDataStream output(&mFile);
+
+    Student_model::student stud;
+    QModelIndex index;
+    int size = ui->tableView->model()->rowCount();
+    for( int i=0; i<size;i++)
+    {
+        index= ui->tableView->model()->index(i,0);
+        stud.name = ui->tableView->model()->data(index,Qt::DisplayRole).toString();
+        index= ui->tableView->model()->index(i,1);
+        stud.course= ui->tableView->model()->data(index,Qt::DisplayRole).toUInt();
+        index= ui->tableView->model()->index(i,2);
+        stud.group= ui->tableView->model()->data(index,Qt::DisplayRole).toUInt();
+        output<<stud;
+    }
+
     ui->statusBar->showMessage("Write to file: " + filePath);
     mFile.close();
 }
 
 void MainWindow::on_insButton_clicked()
 {
-    close();
+    QModelIndex cur = ui->tableView->currentIndex();
+    ui->tableView->model()->insertRows(1,1,cur);
 }
 
 void MainWindow::on_delButton_clicked()
 {
-    close();
+    QModelIndex current=ui->tableView->currentIndex();
+
+    if( ui->tableView->model()->rowCount()!=1)
+    ui->tableView->model()->removeRows(1,1,current);
 }

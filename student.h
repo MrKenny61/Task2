@@ -1,14 +1,12 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 
-#endif // STUDENT_H
-
 #include <QAbstractTableModel>
 #include <QVector>
+#include <QString>
+#include <QDataStream>
 
 using namespace std;
-
-typedef unsigned int uint;
 
 class Student_model : public QAbstractTableModel
 {
@@ -17,7 +15,7 @@ private:
 public:
     struct student
     {
-        char name[30];
+        QString name;
         uint course;
         uint group;
     };
@@ -26,46 +24,22 @@ public:
 
     QVector <student> vector;
 
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-    {
-        if (role==Qt::DisplayRole){
-            if (orientation==Qt::Horizontal){
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-            switch (section) {
-             case 0:return QString("Name");
-             case 1:return QString("Course");
-             case 2:return QString("Group")  ;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-            default:
-                break;
-            }
-        }
-        }
-        return QVariant();
-    }
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const
-    {
-        return vector.length();
-    }
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    int columnCount(const QModelIndex &parent = QModelIndex()) const
-    {
-        return 3;
-    }
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const
-    {
-        if (role==Qt::DisplayRole){
-            switch (index.column()) {
-             case 0:return vector.at(index.row()).name;
-             case 1:return vector.at(index.row()).course;
-             case 2:return vector.at(index.row()).group;
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
-            default:
-                break;
-            }
-        }
-        return QVariant();
-    }
 };
+
+bool operator>>(QDataStream &input,Student_model::student &item);
+
+bool operator<<(QDataStream &output, const Student_model::student &item);
+
+#endif // STUDENT_H

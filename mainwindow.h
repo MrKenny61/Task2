@@ -6,7 +6,7 @@
 #include <QFile>
 #include <QTextEdit>
 #include <QDataStream>
-#include "student.h"
+#include <QFileDialog>
 
 using namespace std;
 
