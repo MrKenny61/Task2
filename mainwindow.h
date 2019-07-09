@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
-#include <QTextStream>
 #include <QFile>
 #include <QTextEdit>
+#include <QDataStream>
 #include "student.h"
 
 using namespace std;

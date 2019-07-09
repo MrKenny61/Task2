@@ -8,9 +8,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     ui->statusBar->showMessage("OK");
-    //Student *model = new Student;
-    //ui->tableView->setModel(model);
+    Student_model *studmod = new Student_model;
+    ui->tableView->setModel(studmod);
 }
 
 MainWindow::~MainWindow()
@@ -35,9 +36,17 @@ void MainWindow::openFile(const QString &filePath)
         ui->statusBar->showMessage("Error open file");
         return;
     }
-    QTextStream stream(&mFile);
-    //QString buffer = stream.readAll();
-    //ui->tableView
+
+    //QDataStream input(&mFile);
+    //Student_model::student stud;
+    //Student_model *studmod = new Student_model;
+
+    /*while(true)
+    {
+        input >> stud;
+    }*/
+
+    //ui->tableView->setModel(studmod);
     ui->statusBar->showMessage("Read to file: " + filePath);
     mFile.flush();
     mFile.close();
@@ -68,10 +77,10 @@ void MainWindow::saveFile(const QString &filePath)
 
 void MainWindow::on_insButton_clicked()
 {
-
+    close();
 }
 
 void MainWindow::on_delButton_clicked()
 {
-
+    close();
 }

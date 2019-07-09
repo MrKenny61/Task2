@@ -3,104 +3,69 @@
 
 #endif // STUDENT_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <fstream>
-#include<iostream>
-#include <vector>
-#include <iterator>
-#include<string>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-//#include <QAbstractTableModel>
+#include <QAbstractTableModel>
+#include <QVector>
 
 using namespace std;
 
 typedef unsigned int uint;
 
-class Student  /*: public QAbstractTableModel*/
-{
-
-protected:
-    char name[30];
-    uint course;
-    uint group;
-public:
-    Student()
-    {
-		char name[] = "";
-        course = 0;
-        group = 0;
-    }
-    Student(char name[30],uint course,uint group)
-    {
-		
-		strncpy_s(this->name, name, sizeof(this->name) - 1);
-		this->name[sizeof(this->name) - 1] = 0;
-
-        this->course = course;
-        this->group = group;
-
-    }
-
-	string get() const
-	{
-		
-		return "\r"+string(name) + " " + to_string(course) + " " + to_string(group);
-	}
-
-	~Student()
-	{
-
-	}
-};
-
-/*class QAbstractTableModel
+class Student_model : public QAbstractTableModel
 {
 private:
-    
-    string path;
+    Q_OBJECT
 public:
-    QAbstractTableModel(string path)
+    struct student
     {
-		this->path = path;
-    }
-    void show()
+        char name[30];
+        uint course;
+        uint group;
+    };
+
+    Student_model(QObject *parent = nullptr);
+
+    QVector <student> vector;
+
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
     {
-        string s;
-		ifstream f(path, ios::binary);
-		while (getline(f, s))
-		{
-			cout << s << endl;
-		}
-		f.close();
+        if (role==Qt::DisplayRole){
+            if (orientation==Qt::Horizontal){
+
+            switch (section) {
+             case 0:return QString("Name");
+             case 1:return QString("Course");
+             case 2:return QString("Group")  ;
+
+            default:
+                break;
+            }
+        }
+        }
+        return QVariant();
     }
-	void delete_row(int number)
-	{
-		vector<string> v;
-		ifstream f(path, ios::binary);
-		int i = 1;
-		string s;
-		while (getline(f, s))
-		{
-			if (i != number)
-				v.push_back(s);
-			i++;
-		}
-		f.close();
-		ofstream file(path, ios::binary);
-		copy(v.begin(), v.end(), ostream_iterator<string>(file));
-		file.close();
-	}
-	void insert_row(Student s)
-	{
-		std::ofstream file;
-		file.open(path, std::ios::binary | std::ofstream::out | std::ofstream::in);
-		file.seekp(0, std::ios_base::end);
-		
-		file.write(s.get().c_str(), s.get().size());
-	}
-	
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        return vector.length();
+    }
+
+    int columnCount(const QModelIndex &parent = QModelIndex()) const
+    {
+        return 3;
+    }
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const
+    {
+        if (role==Qt::DisplayRole){
+            switch (index.column()) {
+             case 0:return vector.at(index.row()).name;
+             case 1:return vector.at(index.row()).course;
+             case 2:return vector.at(index.row()).group;
+
+            default:
+                break;
+            }
+        }
+        return QVariant();
+    }
 };
-*/
