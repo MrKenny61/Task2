@@ -47,6 +47,34 @@ QVariant Student_model::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+bool Student_model::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role==Qt::EditRole)
+    {
+        student s=vector.value(index.row());
+        switch (index.column()) {
+        case 0: s.name=value.toString();
+            break;
+        case 1: s.course=value.toUInt();
+            break;
+        case 2: s.group=value.toUInt();
+            break;
+
+        default:return false;
+        }
+
+        vector.replace(index.row(),s);
+        emit(dataChanged(index,index));
+    }
+    return true;
+}
+
+Qt::ItemFlags Student_model::flags(const QModelIndex &index) const
+{
+
+    return QAbstractItemModel::flags(index)| Qt::ItemIsEditable;
+}
+
 bool Student_model::insertRows(int row, int count, const QModelIndex &parent)
 {
     beginInsertRows(QModelIndex(), row, row + count - 1);
